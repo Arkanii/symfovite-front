@@ -1,0 +1,22 @@
+{
+    # Debug
+    {$DEBUG}
+    # HTTP/3 support
+    servers {
+        protocol {
+            experimental_http3
+        }
+    }
+}
+
+{$SERVER_NAME}
+
+log
+
+route {
+    root * /srv/app/
+    push
+    reverse_proxy vite:443
+    encode zstd gzip
+    try_files {path} /index.html
+}
