@@ -2,33 +2,33 @@ name: Submodule Notify Parent
 
 # Controls when the workflow will run
 on:
-    push:
-        branches:
-            - master
-
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+  push:
+    branches:
+      - master
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    notify:
-        name: Submodule Notify Parent
-
-        # The type of runner that the job will run on
-        runs-on: ubuntu-latest
-
-        # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-        defaults:
-            run:
-                shell: bash
-
-        # Steps represent a sequence of tasks that will be executed as part of the job
-        steps:
-            -   name: Github REST API Call
-                env:
-                    CI_TOKEN: ${{ secrets.CI_TOKEN }}
-                    PARENT_REPO: arkanii/symfovite
-                    PARENT_BRANCH: master
-                    WORKFLOW_ID: 16814475
-                run: |
-                    curl -fL --retry 3 -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ env.CI_TOKEN }}" https://api.github.com/repos/${{ env.PARENT_REPO }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches -d '{"ref":"${{ env.PARENT_BRANCH }}"}'
+  notify:
+    name: Submodule Notify Parent
+    
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Github REST API Call
+        env:
+          CI_TOKEN: ${{ secrets.CI_TOKEN }}
+          PARENT_REPO: arkanii/symfovite
+          PARENT_BRANCH: master
+          WORKFLOW_ID: 16814475
+        run: |
+          curl -fL --retry 3 -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ env.CI_TOKEN }}" https://api.github.com/repos/${{ env.PARENT_REPO }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches -d '{"ref":"${{ env.PARENT_BRANCH }}"}'
